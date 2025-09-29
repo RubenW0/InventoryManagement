@@ -1,5 +1,6 @@
 # created by virtualenv automatically
-*
+
+
 # Django
 db.sqlite3
 /static/
