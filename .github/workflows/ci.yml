@@ -27,7 +27,7 @@ jobs:
           --health-retries=5
 
     env:
-      DJANGO_SETTINGS_MODULE: myproject.settings   # pas aan naar jouw settings pad
+      DJANGO_SETTINGS_MODULE: app.settings
       MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       MYSQL_USER: django

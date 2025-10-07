@@ -80,19 +80,22 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'inventorydb',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',  # Gebruik 'db' als Django zelf in Docker draait
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DATABASE', 'inventorydb'),
+        'USER': os.getenv('MYSQL_USER', 'myuser'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'mypassword'),
+        'HOST': os.getenv('MYSQL_HOST', '127.0.0.1'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
     }
 }
+
 
 
 
