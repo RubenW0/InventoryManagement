@@ -10,6 +10,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: django
+          MYSQL_PASSWORD: django
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DJANGO_SETTINGS_MODULE: myproject.settings   # pas aan naar jouw settings pad
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PORT: 3306
+      MYSQL_USER: django
+      MYSQL_PASSWORD: django
+      MYSQL_DATABASE: test_db
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -17,15 +41,28 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"   # of de versie die jij lokaal gebruikt
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
+
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "⏳ Wachten tot MySQL klaar is..."
+          for i in {1..20}; do
+            if mysqladmin ping -h127.0.0.1 -udjango -pdjango --silent; then
+              echo "✅ MySQL is klaar!"
+              break
+            fi
+            echo "⏳ Nog even wachten..."
+            sleep 3
+          done
 
       - name: Run migrations
         run: |
+          python manage.py makemigrations
           python manage.py migrate
 
       - name: Run tests
