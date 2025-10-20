@@ -1,8 +1,7 @@
-from core.repositories.product_repository import ProductRepository
 
 class ProductService:
-    def __init__(self, repo=None):
-        self.repo = repo or ProductRepository()
+    def __init__(self, repo):
+        self.repo = repo  # geen ProductRepository() hier
 
     def list_products(self):
         return self.repo.get_all()
