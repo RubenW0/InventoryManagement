@@ -1,7 +1,8 @@
 
 class ProductService:
     def __init__(self, repo):
-        self.repo = repo  # geen ProductRepository() hier
+        self.repo = repo  # fake of echte repo wordt meegegeven
+
 
     def list_products(self):
         return self.repo.get_all()
