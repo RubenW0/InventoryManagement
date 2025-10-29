@@ -46,6 +46,6 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
-            -Dsonar.organization=RubenW0
+            -Dsonar.organization=rubenw0
             -Dsonar.projectKey=RubenW0_inventory-backend
             -Dsonar.python.coverage.reportPaths=coverage.xml
